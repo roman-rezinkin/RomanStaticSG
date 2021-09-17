@@ -104,15 +104,17 @@ def conversionFuncFolder():
             print("\n--- FAILURE ---")
         os.mkdir(officialPath)                             # Try to create new dist folder
         os.chdir(dirName)
+        counter = 1
+        previousFileNameArr = []
+        
         for aFile in arrayOfFiles:                     #For each file name convert into html and create new file.
             existingFile = open(aFile, "r")            # Read existing file
             os.chdir("../")                            # Change directories
             os.chdir(officialPath)
             aFile = os.path.splitext(aFile)[0]         #Cut off the extension of the file
-            
+            previousFileNameArr.append(aFile)
             n = open(aFile + ".html", "w")             # Create new File under html extension
             newFile = open(aFile + ".html", "a")       # Open file to append contents
-                            
             newFile.write("<!doctype html>\n")
             newFile.write('<html lang="en">\n')
             newFile.write("<head>\n")
@@ -121,7 +123,7 @@ def conversionFuncFolder():
             newFile.write('\t<meta name="viewport" content="width=device-width, initial-scale=1">\n')
             newFile.write("</head>\n")
             newFile.write("<body>\n")
-                            
+            newFile.write('<a href="./index.html">Back to Home</a>')
             temp = existingFile.read().splitlines()
             for x in temp:                                  # Loop through the file we opened
                 if (x != ""):                               # We dont want <p> tags created for new lines
@@ -133,18 +135,35 @@ def conversionFuncFolder():
             newFile.close()
             os.chdir("../")
             os.chdir(dirName)
+        # Create Custom Index html page with links to all the created files
+        print("Creating HTML file")
+        os.chdir("../dist")
+        indexPage = open("index.html", "w")
+        indexPage.write("<!doctype html>\n")
+        indexPage.write('<html lang="en">\n')
+        indexPage.write("<head>\n")
+        indexPage.write('\t<meta charset="utf-8">\n')
+        indexPage.write('\t<title>' + "Index" + '</title>\n')
+        indexPage.write('\t<meta name="viewport" content="width=device-width, initial-scale=1">\n')
+        indexPage.write("</head>\n")
+        indexPage.write("<body>\n")
+        for name in previousFileNameArr:
+            linkString = f'<a href="./{name}.html">{counter}. {name}</a><br>'
+            indexPage.write(str(linkString))
+            counter +=1
+        indexPage.close()
         print("\n--- SUCCESS ---")
     else:
         currentDirectory = os.getcwd()
+        previousFileNameArr = []
         for aFile in arrayOfFiles:
             os.chdir(dirName)
             existingFile = open(aFile, "r")            # Read current existing file
-            # os.chdir("../")                          # Change directories
             os.chdir(customDirectoryPath)              # Change directories
             aFile = os.path.splitext(aFile)[0]         #Cut off the extension of the file
+            previousFileNameArr.append(aFile)
             n = open(aFile + ".html", "w")             # Create new File under html extension
-            newFile = open(aFile + ".html", "a")       # Open file to append contents
-                            
+            newFile = open(aFile + ".html", "a")       # Open file to append contents               
             newFile.write("<!doctype html>\n")
             newFile.write('<html lang="en">\n')
             newFile.write("<head>\n")
@@ -153,7 +172,7 @@ def conversionFuncFolder():
             newFile.write('\t<meta name="viewport" content="width=device-width, initial-scale=1">\n')
             newFile.write("</head>\n")
             newFile.write("<body>\n")
-                            
+            newFile.write('<a href="./index.html">Back to Home</a>')
             temp = existingFile.read().splitlines()
             for x in temp:                                  # Loop through the file we opened
                 if (x != ""):                               # We dont want <p> tags created for new lines
@@ -163,8 +182,22 @@ def conversionFuncFolder():
             existingFile.close()
             n.close()
             newFile.close()
-            # os.chdir("../")
             os.chdir(currentDirectory)
+        # Create Custom Index html page with links to all the created files
+        indexPage = open("index.html", "w")
+        indexPage.write("<!doctype html>\n")
+        indexPage.write('<html lang="en">\n')
+        indexPage.write("<head>\n")
+        indexPage.write('\t<meta charset="utf-8">\n')
+        indexPage.write('\t<title>' + "Index" + '</title>\n')
+        indexPage.write('\t<meta name="viewport" content="width=device-width, initial-scale=1">\n')
+        indexPage.write("</head>\n")
+        indexPage.write("<body>\n")
+        for name in previousFileNameArr:
+            linkString = f'\n<a href="./{name}.html">{counter}. {name}</a><br>'
+            indexPage.write(str(linkString))
+            counter +=1
+        indexPage.close()
         print("\n--- SUCCESS ---")
             
 #Main Logic
