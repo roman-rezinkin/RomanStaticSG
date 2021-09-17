@@ -8,9 +8,9 @@ import os
 import fnmatch
 import shutil
 
-#Variables
+# Global Variables
 workingDirectoryPath = os.getcwd()
-officialPath = workingDirectoryPath + "/dist"
+distFolder = workingDirectoryPath + "/dist"
 arrayOfFiles = []
 arryOfFilesWithExtension = []
 secondArg = ""
@@ -21,123 +21,144 @@ dirName = ""
 #Functions
 # Converting txt files
 def conversionFuncFile():
+    # Local Variables
+    localArrOfFiles = []
+    striclyFileNames = []
+    fileCounter = 0
+    for i in arrayOfFiles:
+        striclyFileNames.append(i)
+        temp = os.getcwd() + "\\" + str(i)
+        localArrOfFiles.append(temp)
     print("\n~~~ SSG Compiling and Working! ~~~\n")      
-    #For each file name convert into html and create new file.
+    #For File name convert into html and create new File.
     if (isCustomDirectory == False):
-        for aFile in arrayOfFiles:
-            try:
-                if os.path.isdir("dist"):                         # Check to see if dist exists, if it does, delete children and parent
-                    shutil.rmtree(officialPath)
-                os.mkdir(officialPath)                            # Try to create new dist folder
-                existingFile = open(aFile, "r")                   # Read existing file
-                os.chdir(officialPath)                            # Change directories
-                aFile = os.path.splitext(aFile)[0]                #Cut off the extension of the file
-
-                n = open(fileName + ".html", "w")                 # Create new File under html extension
-                newFile = open(fileName + ".html", "a")           # Open file to append contents
-                            
-                newFile.write("<!doctype html>\n")
-                newFile.write('<html lang="en">\n')
-                newFile.write("<head>\n")
-                newFile.write('\t<meta charset="utf-8">\n')
-                newFile.write('\t<title>' + fileName + '</title>\n')
-                newFile.write('\t<meta name="viewport" content="width=device-width, initial-scale=1">\n')
-                newFile.write("</head>\n")
-                newFile.write("<body>\n")
-                            
-                temp = existingFile.read().splitlines()
-        
-                for x in temp:                                  # Loop through the file we opened
-                    if (x != ""):                               # We dont want <p> tags created for new lines
-                        newFile.write("\t<p>" + x + "</p>\n")
-                newFile.write("</body>\n")
-                newFile.write("</html>")
-                existingFile.close()
-                n.close()
-                newFile.close()
-                print("\n--- SUCCESS ---")
-            except OSError as error:
-                print("\n--- FAILURE ---")
-                print(error)
-    else:
-        for aFile in arrayOfFiles:
-            try:
-                existingFile = open(aFile, "r")                   # Read existing file
-                os.chdir(customDirectoryPath)                            # Change directories
-                aFile = os.path.splitext(aFile)[0]         #Cut off the extension of the file
-
-                n = open(fileName + ".html", "w")                # Create new File under html extension
-                newFile = open(fileName + ".html", "a")          # Open file to append contents
-                            
-                newFile.write("<!doctype html>\n")
-                newFile.write('<html lang="en">\n')
-                newFile.write("<head>\n")
-                newFile.write('\t<meta charset="utf-8">\n')
-                newFile.write('\t<title>' + fileName + '</title>\n')
-                newFile.write('\t<meta name="viewport" content="width=device-width, initial-scale=1">\n')
-                newFile.write("</head>\n")
-                newFile.write("<body>\n")
-                            
-                temp = existingFile.read().splitlines()
-        
-                for x in temp:                                  # Loop through the file we opened
-                    if (x != ""):                               # We dont want <p> tags created for new lines
-                        newFile.write("\t<p>" + x + "</p>\n")
-                newFile.write("</body>\n")
-                newFile.write("</html>")
-                existingFile.close()
-                n.close()
-                newFile.close()
-                print("\n--- SUCCESS ---")
-            except OSError as error:
-                print("\n--- FAILURE ---")
-                print(error)
-
-# Converting files from within a folder
-def conversionFuncFolder():
-    print("\n~~~ SSG Compiling and Working! ~~~\n")
-    if (isCustomDirectory == False):                  # Check to see if a custom output directory exists.
         try:
-            if os.path.isdir("dist"):                      # Check to see if dist exists, if it does, delete children and parent
-                shutil.rmtree(officialPath)
+            if os.path.isdir("dist"):                         # Check to see if dist exists, if it does, delete children and parent
+                shutil.rmtree(distFolder)
+            os.mkdir(distFolder)                              # Try to create new dist folder
         except OSError as error:
             print("\n--- FAILURE ---")
-        os.mkdir(officialPath)                             # Try to create new dist folder
-        os.chdir(dirName)
-        counter = 1
-        previousFileNameArr = []
+            print(error)
         
-        for aFile in arrayOfFiles:                     #For each file name convert into html and create new file.
-            existingFile = open(aFile, "r")            # Read existing file
-            os.chdir("../")                            # Change directories
-            os.chdir(officialPath)
-            aFile = os.path.splitext(aFile)[0]         #Cut off the extension of the file
-            previousFileNameArr.append(aFile)
-            n = open(aFile + ".html", "w")             # Create new File under html extension
-            newFile = open(aFile + ".html", "a")       # Open file to append contents
+        for aFile in localArrOfFiles:
+            originalFile = open(aFile, "r", encoding="utf8")  # Read existing file
+            os.chdir(distFolder)                              # Change directories
+            originalFileName = os.path.splitext(striclyFileNames[fileCounter])[0]                # Cut off the extension of the file
+
+            newFile = open(originalFileName + ".html", "w")                 # Create new File under html extension
+            newFile = open(originalFileName + ".html", "a")           # Open file to append contents
+                            
             newFile.write("<!doctype html>\n")
             newFile.write('<html lang="en">\n')
             newFile.write("<head>\n")
             newFile.write('\t<meta charset="utf-8">\n')
-            newFile.write('\t<title>' + aFile + '</title>\n')
+            newFile.write('\t<title>' + originalFileName + '</title>\n')
+            newFile.write('\t<meta name="viewport" content="width=device-width, initial-scale=1">\n')
+            newFile.write("</head>\n")
+            newFile.write("<body>\n")
+                            
+            temp = originalFile.read().splitlines()
+        
+            for x in temp:                                      # Loop through the file we opened
+                if (x != ""):                                   # We dont want <p> tags created for new lines
+                    newFile.write("\t<p>" + x + "</p>\n")
+            newFile.write("</body>\n")
+            newFile.write("</html>")
+            fileCounter += 1
+            originalFile.close()
+            newFile.close()
+        print("\n--- SUCCESS ---")
+    else:
+        for aFile in localArrOfFiles:
+            originalFile = open(aFile, "r", encoding="utf8")                            # Read existing file
+            os.chdir(customDirectoryPath)                                               # Change directories
+            originalFileName = os.path.splitext(striclyFileNames[fileCounter])[0]       # Cut off the extension of the file
+
+            newFile = open(originalFileName + ".html", "w")                             # Create new File under html extension
+            newFile = open(originalFileName + ".html", "a")                             # Open file to append contents
+                            
+            newFile.write("<!doctype html>\n")
+            newFile.write('<html lang="en">\n')
+            newFile.write("<head>\n")
+            newFile.write('\t<meta charset="utf-8">\n')
+            newFile.write('\t<title>' + originalFileName + '</title>\n')
+            newFile.write('\t<meta name="viewport" content="width=device-width, initial-scale=1">\n')
+            newFile.write("</head>\n")
+            newFile.write("<body>\n")
+                            
+            temp = originalFile.read().splitlines()
+        
+            for x in temp:                                                             # Loop through the file we opened
+                if (x != ""):                                                          # We dont want <p> tags created for new lines
+                    newFile.write("\t<p>" + x + "</p>\n")
+            newFile.write("</body>\n")
+            newFile.write("</html>")
+            originalFile.close()
+            fileCounter += 1
+            newFile.close()
+            print("\n--- SUCCESS ---")
+
+# Converting files from within a folder
+def conversionFuncFolder():
+    # Local Variables
+    localArrOfFiles = []
+    striclyFileNames = []
+    fileCounter = 0
+    counter = 1
+    previousFileNameArr = []
+    print("\n~~~ SSG Compiling and Working! ~~~\n")
+    if (isCustomDirectory == False):                                              # Check to see if a custom output directory exists.
+        try:
+            if os.path.isdir("dist"):                                             # Check to see if dist exists, if it does, delete children and parent
+                shutil.rmtree(distFolder)
+        except OSError as error:
+            print("\n--- FAILURE ---")
+        
+        # Try to create new dist folder
+        os.mkdir(distFolder)
+        # Change to specified Folder
+        os.chdir(dirName)
+        # Gather local files and convert them into usable paths 
+        for i in arrayOfFiles:
+            striclyFileNames.append(i)
+            temp = os.getcwd() + "\\" + str(i)
+            localArrOfFiles.append(temp)
+        
+        # Main Logic
+        for aFile in localArrOfFiles:                                              #For each file name convert into html and create new file.
+            originalFile = open(aFile, "r", encoding="utf8")                       # Open for reading the existing file
+            originalFileName = os.path.splitext(striclyFileNames[fileCounter])[0]  #Cut off the extension of the file
+            previousFileNameArr.append(originalFileName)
+            
+            os.chdir(distFolder)
+            
+            #Creating the new file template
+            newFile = open(originalFileName + ".html", "w")                        # Create new File under html extension
+            newFile = open(originalFileName + ".html", "a")                        # Open file to append contents
+            newFile.write("<!doctype html>\n")
+            newFile.write('<html lang="en">\n')
+            newFile.write("<head>\n")
+            newFile.write('\t<meta charset="utf-8">\n')
+            newFile.write('\t<title>' + originalFileName + '</title>\n')
             newFile.write('\t<meta name="viewport" content="width=device-width, initial-scale=1">\n')
             newFile.write("</head>\n")
             newFile.write("<body>\n")
             newFile.write('<a href="./index.html">Back to Home</a>')
-            temp = existingFile.read().splitlines()
-            for x in temp:                                  # Loop through the file we opened
-                if (x != ""):                               # We dont want <p> tags created for new lines
+            
+            temp = originalFile.read().splitlines()                                # Read through the original file and remove line breaks
+            for x in temp:                                                         # Loop through the file we opened
+                if (x != ""):                                                      # We dont want <p> tags created for new lines
                     newFile.write("\t<p>" + x + "</p>\n")
             newFile.write("</body>\n")
             newFile.write("</html>")
-            existingFile.close()
-            n.close()
+            originalFile.close()
             newFile.close()
-            os.chdir("../")
+            fileCounter += 1
             os.chdir(dirName)
+        
         # Create Custom Index html page with links to all the created files
         print("Creating HTML file")
-        os.chdir("../dist")
+        os.chdir(distFolder)
         indexPage = open("index.html", "w")
         indexPage.write("<!doctype html>\n")
         indexPage.write('<html lang="en">\n')
@@ -154,17 +175,25 @@ def conversionFuncFolder():
         indexPage.close()
         print("\n--- SUCCESS ---")
     else:
-        currentDirectory = os.getcwd()
-        previousFileNameArr = []
-        counter = 1
+        # Change to specified Folder
+        os.chdir(dirName)
+        # Gather local files and convert them into usable paths 
+        for i in arrayOfFiles:
+            striclyFileNames.append(i)
+            temp = os.getcwd() + "\\" + str(i)
+            localArrOfFiles.append(temp)
+        
+        # Main logic
         for aFile in arrayOfFiles:
-            os.chdir(dirName)
-            existingFile = open(aFile, "r")            # Read current existing file
-            os.chdir(customDirectoryPath)              # Change directories
-            aFile = os.path.splitext(aFile)[0]         #Cut off the extension of the file
+            # os.chdir(dirName)
+            originalFile = open(aFile, "r", encoding="utf8")            # Read current existing file
+            os.chdir(customDirectoryPath)                               # Change directories
+            aFile = os.path.splitext(aFile)[0]                          #Cut off the extension of the file
             previousFileNameArr.append(aFile)
-            n = open(aFile + ".html", "w")             # Create new File under html extension
-            newFile = open(aFile + ".html", "a")       # Open file to append contents               
+            
+            #Creating the new file template
+            newFile = open(aFile + ".html", "w")                              # Create new File under html extension
+            newFile = open(aFile + ".html", "a")                        # Open file to append contents               
             newFile.write("<!doctype html>\n")
             newFile.write('<html lang="en">\n')
             newFile.write("<head>\n")
@@ -174,16 +203,18 @@ def conversionFuncFolder():
             newFile.write("</head>\n")
             newFile.write("<body>\n")
             newFile.write('<a href="./index.html">Back to Home</a>')
-            temp = existingFile.read().splitlines()
-            for x in temp:                                  # Loop through the file we opened
-                if (x != ""):                               # We dont want <p> tags created for new lines
+            
+            temp = originalFile.read().splitlines()                     # Read through the original file and remove line breaks
+            for x in temp:                                              # Loop through the file we opened
+                if (x != ""):                                           # We dont want <p> tags created for new lines
                     newFile.write("\t<p>" + x + "</p>\n")
             newFile.write("</body>\n")
             newFile.write("</html>")
-            existingFile.close()
-            n.close()
+            
+            originalFile.close()
             newFile.close()
-            os.chdir(currentDirectory)
+            os.chdir(dirName)
+
         # Create Custom Index html page with links to all the created files
         os.chdir(customDirectoryPath)
         indexPage = open("index.html", "w")
@@ -204,7 +235,7 @@ def conversionFuncFolder():
             
 #Main Logic
 if __name__ == "__main__":
-    short_opts = "hi:ov"
+    short_opts = "hiov"
     long_opts = ["help", "input=", "output=", "version"]
     temp = sys.argv
     arguments = temp[1:]
@@ -223,6 +254,9 @@ if __name__ == "__main__":
                 print("\nHelp Screen\n")
                 print("Usage: python romanssg.py\n")
                 print("Commands: \nTo get version number use the command: --version, -v")
+                print("To change the output directory to a user specified directory, run --output= or -o=")
+                print("To specify an input, use either a file or a folder with items inside of it")
+                print("To specify input use: --input= or -i=")
             elif curr_arg in ("--output", "-o"):
                 if os.path.isdir(curr_value):
                     print("Output Directory has been changed to " + curr_value)
