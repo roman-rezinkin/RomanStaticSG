@@ -156,6 +156,7 @@ def conversionFuncFolder():
     else:
         currentDirectory = os.getcwd()
         previousFileNameArr = []
+        counter = 1
         for aFile in arrayOfFiles:
             os.chdir(dirName)
             existingFile = open(aFile, "r")            # Read current existing file
@@ -184,6 +185,7 @@ def conversionFuncFolder():
             newFile.close()
             os.chdir(currentDirectory)
         # Create Custom Index html page with links to all the created files
+        os.chdir(customDirectoryPath)
         indexPage = open("index.html", "w")
         indexPage.write("<!doctype html>\n")
         indexPage.write('<html lang="en">\n')
@@ -194,7 +196,7 @@ def conversionFuncFolder():
         indexPage.write("</head>\n")
         indexPage.write("<body>\n")
         for name in previousFileNameArr:
-            linkString = f'\n<a href="./{name}.html">{counter}. {name}</a><br>'
+            linkString = f'<a href="./{name}.html">{counter}. {name}</a><br>'
             indexPage.write(str(linkString))
             counter +=1
         indexPage.close()
