@@ -45,9 +45,9 @@ def conversionFuncFile():
         for aFile in localArrOfFiles:
             originalFile = open(aFile, "r", encoding="utf8")  # Read existing file
             os.chdir(distFolder)  # Change directories
-            originalFileName = os.path.splitext(striclyFileNames[fileCounter])[
-                0
-            ]  # Cut off the extension of the file
+            originalFileName, end = os.path.splitext(
+                striclyFileNames[fileCounter]
+            )  # Cut off the extension of the file
 
             newFile = open(
                 originalFileName + ".html", "w"
@@ -71,7 +71,14 @@ def conversionFuncFile():
 
             for x in temp:  # Loop through the file we opened
                 if x != "":  # We dont want <p> tags created for new lines
-                    newFile.write("\t<p>" + x + "</p>\n")
+                    if end == ".txt":
+                        newFile.write("\t<p>" + x + "</p>\n")
+                    if end == ".md":
+                        if x.startswith("# "):
+                            x = x.replace("# ", "<h1>")
+                            newFile.write("\t" + x + "</h1>\n")
+                        else:
+                            newFile.write("\t<p>" + x + "</p>\n")
             newFile.write("</body>\n")
             newFile.write("</html>")
             fileCounter += 1
@@ -336,7 +343,6 @@ if __name__ == "__main__":
                     # for i in os.listdir("."):
                     # if fnmatch.fnmatch(i, "[example]"):
                     #     print("matched with")
-                    print(fileName)
                     arrayOfFiles.append(fileName)
                     # if fnmatch.fnmatch(i, "*.md"):
                     #     arrayOfFiles.append(i)
