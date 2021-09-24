@@ -27,7 +27,11 @@ def conversionFuncFile():
     fileCounter = 0
     for i in arrayOfFiles:
         striclyFileNames.append(i)
-        temp = os.getcwd() + "/" + str(i)
+        if os.name == "posix":
+            temp = os.getcwd() + "/" + str(i)
+        else:
+            temp = os.getcwd() + "\\" + str(i)
+
         localArrOfFiles.append(temp)
     print("\n~~~ SSG Compiling and Working! ~~~\n")
     # For File name convert into html and create new File.

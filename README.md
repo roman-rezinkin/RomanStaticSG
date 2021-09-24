@@ -1,7 +1,7 @@
 # RomanStaticSG
 ## Welcome to Romans Static Site Generator v.0.1
 ## About RomanStaticSG
-RomanStaticSG is made in python. It is a simple static site generator. It accepts an input file, or input folder. The program will then take the accepted files and create basic html webpages, as well as an index.html file. The script also allows you to input a custom output directory, so that the files could be saved in a custom location.
+RomanStaticSG is made in python. It is a simple static site generator. It accepts an input file, or input folder. The current file types that are parsed are text and markdown. Markdown however currently only supports heading level 1 parsing. The program will then take the accepted files and create basic html webpages, as well as an index.html file. The script also allows you to input a custom output directory, so that the files could be saved in a custom location.
 ## How to Use RomanStaticSG
 ***Python 3.9+ Required***  
 To use RomanStaticSG simply type  
@@ -28,9 +28,9 @@ When running the command input command and not specifying the output command, a 
     The current version is: 0.1  
     
 ### Input Command
-To run the input command specify the file name **without** the extension  
+To run the input command specify the file name **with** the extension  
 
-    python romanssg.py --input=example    |   python romanssg.py -i=example   
+    python romanssg.py --input=example.txt    |    python romanssg.py --input=example.md
 
 To run the input command with a folder, specify the folder name  
   
