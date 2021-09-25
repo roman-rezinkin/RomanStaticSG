@@ -78,6 +78,7 @@ def conversionFuncFile():
                     if end == ".txt":
                         newFile.write("\t<p>" + x + "</p>\n")
                     if end == ".md":
+                        # generate level 1 heading based on .md file
                         if x.startswith("# "):
                             x = x.replace("# ", "<h1>")
                             newFile.write("\t" + x + "</h1>\n")
@@ -336,9 +337,7 @@ if __name__ == "__main__":
                     print("Working on Directory")
                     dirName = curr_value
                     for i in os.listdir(curr_value):
-                        if fnmatch.fnmatch(i, "*.txt"):
-                            arrayOfFiles.append(i)
-                        if fnmatch.fnmatch(i, "*.md"):
+                        if fnmatch.fnmatch(i, "*.txt") or fnmatch.fnmatch(i, "*.md"):
                             arrayOfFiles.append(i)
                     conversionFuncFolder()
                 else:
