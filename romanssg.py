@@ -8,19 +8,9 @@ import os
 import fnmatch
 import shutil
 
-# Global Variables
-workingDirectoryPath = os.getcwd()
-distFolder = workingDirectoryPath + "/dist"
-arrayOfFiles = []
-arryOfFilesWithExtension = []
-secondArg = ""
-isCustomDirectory = False
-customDirectoryPath = ""
-fileName = ""
-dirName = ""
 # Functions
 # Converting txt files
-def conversionFuncFile():
+def conversionFuncFile(lang, isCustomDirectory, arrayOfFiles, customDirectoryPath, distFolder):
     # Local Variables
     localArrOfFiles = []
     striclyFileNames = []
@@ -48,6 +38,7 @@ def conversionFuncFile():
 
         for aFile in localArrOfFiles:
             originalFile = open(aFile, "r", encoding="utf8")  # Read existing file
+            print(distFolder)
             os.chdir(distFolder)  # Change directories
             originalFileName, end = os.path.splitext(
                 striclyFileNames[fileCounter]
@@ -61,7 +52,7 @@ def conversionFuncFile():
             )  # Open file to append contents
 
             newFile.write("<!doctype html>\n")
-            newFile.write('<html lang="en">\n')
+            newFile.write('<html lang="' + lang + '">\n')
             newFile.write("<head>\n")
             newFile.write('\t<meta charset="utf-8">\n')
             newFile.write("\t<title>" + originalFileName + "</title>\n")
@@ -109,7 +100,7 @@ def conversionFuncFile():
             )  # Open file to append contents
 
             newFile.write("<!doctype html>\n")
-            newFile.write('<html lang="en">\n')
+            newFile.write('<html lang="' + lang + '">\n')
             newFile.write("<head>\n")
             newFile.write('\t<meta charset="utf-8">\n')
             newFile.write("\t<title>" + originalFileName + "</title>\n")
@@ -144,7 +135,7 @@ def conversionFuncFile():
 
 
 # Converting files from within a folder
-def conversionFuncFolder():
+def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, customDirectoryPath, distFolder):
     # Local Variables
     localArrOfFiles = []
     striclyFileNames = []
@@ -164,7 +155,7 @@ def conversionFuncFolder():
         # Try to create new dist folder
         os.mkdir(distFolder)
         # Change to specified Folder
-        os.chdir(dirName)
+        os.chdir(directoryName)
         # Gather local files and convert them into usable paths
         for i in arrayOfFiles:
             striclyFileNames.append(i)
@@ -195,7 +186,7 @@ def conversionFuncFolder():
                 originalFileName + ".html", "a"
             )  # Open file to append contents
             newFile.write("<!doctype html>\n")
-            newFile.write('<html lang="en">\n')
+            newFile.write('<html lang="' + lang + '">\n')
             newFile.write("<head>\n")
             newFile.write('\t<meta charset="utf-8">\n')
             newFile.write("\t<title>" + originalFileName + "</title>\n")
@@ -228,14 +219,14 @@ def conversionFuncFolder():
             originalFile.close()
             newFile.close()
             fileCounter += 1
-            os.chdir(dirName)
+            os.chdir(directoryName)
 
         # Create Custom Index html page with links to all the created files
         print("Creating HTML file")
         os.chdir(distFolder)
         indexPage = open("index.html", "w")
         indexPage.write("<!doctype html>\n")
-        indexPage.write('<html lang="en">\n')
+        newFile.write('<html lang="' + lang + '">\n')
         indexPage.write("<head>\n")
         indexPage.write('\t<meta charset="utf-8">\n')
         indexPage.write("\t<title>" + "Index" + "</title>\n")
@@ -252,7 +243,7 @@ def conversionFuncFolder():
         print("\n--- SUCCESS ---")
     else:
         # Change to specified Folder
-        os.chdir(dirName)
+        os.chdir(directoryName)
         # Gather local files and convert them into usable paths
         for i in arrayOfFiles:
             striclyFileNames.append(i)
@@ -273,7 +264,7 @@ def conversionFuncFolder():
             newFile = open(aFile + ".html", "w")  # Create new File under html extension
             newFile = open(aFile + ".html", "a")  # Open file to append contents
             newFile.write("<!doctype html>\n")
-            newFile.write('<html lang="en">\n')
+            newFile.write('<html lang="' + languageVar + '">\n')
             newFile.write("<head>\n")
             newFile.write('\t<meta charset="utf-8">\n')
             newFile.write("\t<title>" + aFile + "</title>\n")
@@ -306,7 +297,7 @@ def conversionFuncFolder():
 
             originalFile.close()
             newFile.close()
-            os.chdir(dirName)
+            os.chdir(directoryName)
 
         # Create Custom Index html page with links to all the created files
         os.chdir(customDirectoryPath)
@@ -331,10 +322,18 @@ def conversionFuncFolder():
 
 # Main Logic
 if __name__ == "__main__":
-    short_opts = "hiov"
-    long_opts = ["help", "input=", "output=", "version"]
+    # Local Variables
+    short_opts = "hiovl"
+    long_opts = ["help", "input=", "output=", "version", "lang="]
     temp = sys.argv
     arguments = temp[1:]
+    languageVar = ""
+    isCustomDirectory = False
+    arrayOfFiles = []
+    customDirectoryPath = ""
+    workingDirectoryPath = os.getcwd()
+    distFolder = workingDirectoryPath + "/dist"
+
     try:
         arg, values = getopt.getopt(arguments, short_opts, long_opts)
     except getopt.error as error:
@@ -359,6 +358,8 @@ if __name__ == "__main__":
                     "To specify an input, use either a file or a folder with items inside of it"
                 )
                 print("To specify input use: --input= or -i=")
+            elif curr_arg in ("--lang", "-l"):
+                languageVar = curr_value
             elif curr_arg in ("--output", "-o"):
                 if os.path.isdir(curr_value):
                     print("Output Directory has been changed to " + curr_value)
@@ -369,22 +370,18 @@ if __name__ == "__main__":
                         "ERROR: Directory does not exist! Please enter a valid directory"
                     )
             elif curr_arg in ("--input", "-i"):
+                if languageVar == "":
+                    languageVar = "en-CA"
                 if os.path.isdir(curr_value):
                     print("Working on Directory")
-                    dirName = curr_value
+                    # dirName = curr_value
                     for i in os.listdir(curr_value):
                         if fnmatch.fnmatch(i, "*.txt") or fnmatch.fnmatch(i, "*.md"):
                             arrayOfFiles.append(i)
-                    conversionFuncFolder()
+                    conversionFuncFolder(languageVar, curr_value, isCustomDirectory, customDirectoryPath, distFolder)
                 else:
                     print("Working on File " + curr_value)
-                    fileName = curr_value
-                    # for i in os.listdir("."):
-                    # if fnmatch.fnmatch(i, "[example]"):
-                    #     print("matched with")
-                    arrayOfFiles.append(fileName)
-                    # if fnmatch.fnmatch(i, "*.md"):
-                    #     arrayOfFiles.append(i)
-                    conversionFuncFile()
+                    arrayOfFiles.append(curr_value)
+                    conversionFuncFile(languageVar, isCustomDirectory, arrayOfFiles, customDirectoryPath, distFolder)
             else:
                 print("Error")
