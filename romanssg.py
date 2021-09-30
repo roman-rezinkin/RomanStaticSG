@@ -97,7 +97,7 @@ def conversionFuncFile():
         for aFile in localArrOfFiles:
             originalFile = open(aFile, "r", encoding="utf8")  # Read existing file
             os.chdir(customDirectoryPath)  # Change directories
-            originalFileName = os.path.splitext(striclyFileNames[fileCounter])[
+            originalFileName, end = os.path.splitext(striclyFileNames[fileCounter])[
                 0
             ]  # Cut off the extension of the file
 
@@ -123,7 +123,18 @@ def conversionFuncFile():
 
             for x in temp:  # Loop through the file we opened
                 if x != "":  # We dont want <p> tags created for new lines
-                    newFile.write("\t<p>" + x + "</p>\n")
+                    if end == ".txt":
+                        newFile.write("\t<p>" + x + "</p>\n")
+                    if end == ".md":
+                        # generate level 1 heading based on .md file
+                        if x.startswith("# "):
+                            x = x.replace("# ", "<h1>")
+                            newFile.write("\t" + x + "</h1>\n")
+                        elif x.startswith("---"):
+                            x = x.replace("---", "<hr>")
+                            newFile.write("\n\t" + x + "\n\n")
+                        else:
+                            newFile.write("\t<p>" + x + "</p>\n")
             newFile.write("</body>\n")
             newFile.write("</html>")
             originalFile.close()
@@ -169,7 +180,7 @@ def conversionFuncFolder():
             originalFile = open(
                 aFile, "r", encoding="utf8"
             )  # Open for reading the existing file
-            originalFileName = os.path.splitext(striclyFileNames[fileCounter])[
+            originalFileName, end = os.path.splitext(striclyFileNames[fileCounter])[
                 0
             ]  # Cut off the extension of the file
             previousFileNameArr.append(originalFileName)
@@ -200,7 +211,18 @@ def conversionFuncFolder():
             )  # Read through the original file and remove line breaks
             for x in temp:  # Loop through the file we opened
                 if x != "":  # We dont want <p> tags created for new lines
-                    newFile.write("\t<p>" + x + "</p>\n")
+                    if end == ".txt":
+                        newFile.write("\t<p>" + x + "</p>\n")
+                    if end == ".md":
+                        # generate level 1 heading based on .md file
+                        if x.startswith("# "):
+                            x = x.replace("# ", "<h1>")
+                            newFile.write("\t" + x + "</h1>\n")
+                        elif x.startswith("---"):
+                            x = x.replace("---", "<hr>")
+                            newFile.write("\n\t" + x + "\n\n")
+                        else:
+                            newFile.write("\t<p>" + x + "</p>\n")
             newFile.write("</body>\n")
             newFile.write("</html>")
             originalFile.close()
@@ -244,7 +266,7 @@ def conversionFuncFolder():
                 aFile, "r", encoding="utf8"
             )  # Read current existing file
             os.chdir(customDirectoryPath)  # Change directories
-            aFile = os.path.splitext(aFile)[0]  # Cut off the extension of the file
+            aFile, end = os.path.splitext(aFile)[0]  # Cut off the extension of the file
             previousFileNameArr.append(aFile)
 
             # Creating the new file template
@@ -267,7 +289,18 @@ def conversionFuncFolder():
             )  # Read through the original file and remove line breaks
             for x in temp:  # Loop through the file we opened
                 if x != "":  # We dont want <p> tags created for new lines
-                    newFile.write("\t<p>" + x + "</p>\n")
+                    if end == ".txt":
+                        newFile.write("\t<p>" + x + "</p>\n")
+                    if end == ".md":
+                        # generate level 1 heading based on .md file
+                        if x.startswith("# "):
+                            x = x.replace("# ", "<h1>")
+                            newFile.write("\t" + x + "</h1>\n")
+                        elif x.startswith("---"):
+                            x = x.replace("---", "<hr>")
+                            newFile.write("\n\t" + x + "\n\n")
+                        else:
+                            newFile.write("\t<p>" + x + "</p>\n")
             newFile.write("</body>\n")
             newFile.write("</html>")
 
