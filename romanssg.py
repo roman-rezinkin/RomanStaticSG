@@ -82,6 +82,9 @@ def conversionFuncFile():
                         if x.startswith("# "):
                             x = x.replace("# ", "<h1>")
                             newFile.write("\t" + x + "</h1>\n")
+                        elif x.startswith("---"):
+                            x = x.replace("---", "<hr>")
+                            newFile.write("\n\t" + x + "\n\n")
                         else:
                             newFile.write("\t<p>" + x + "</p>\n")
             newFile.write("</body>\n")
