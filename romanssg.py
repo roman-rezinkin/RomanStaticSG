@@ -1,6 +1,7 @@
 # main
 # Import Statements
 from genericpath import isdir, isfile
+from json.decoder import JSONDecodeError
 from posixpath import dirname
 import sys
 import getopt
@@ -374,8 +375,16 @@ if __name__ == "__main__":
                 arg.append((curr_arg, curr_value))
 
                 # Open json and store in config
-                with open(curr_value, "r") as f:
-                    config = json.load(f)
+                try:
+                    with open(curr_value, "r") as f:
+                        try:
+                            config = json.load(f)
+                        except JSONDecodeError:
+                            print("Invalid JSON")
+                            sys.exit(1)
+                except FileNotFoundError:
+                    print("Config file not found")
+                    sys.exit(1)
 
                 # Order the args from the json
                 config_list = []
