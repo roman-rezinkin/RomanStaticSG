@@ -156,6 +156,7 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
         os.mkdir(distFolder)
         # Change to specified Folder
         os.chdir(directoryName)
+        directoryPath = os.getcwd()
         # Gather local files and convert them into usable paths
         for i in arrayOfFiles:
             striclyFileNames.append(i)
@@ -167,13 +168,15 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
             aFile
         ) in (
             localArrOfFiles
-        ):  # For each file name convert into html and create new file.
+        ):  
+            # For each file name convert into html and create new file.
             originalFile = open(
                 aFile, "r", encoding="utf8"
-            )  # Open for reading the existing file
-            originalFileName, end = os.path.splitext(striclyFileNames[fileCounter])[
-                0
-            ]  # Cut off the extension of the file
+            )  
+            # Open for reading the existing file
+            originalFileName = os.path.splitext(striclyFileNames[fileCounter])[0]  
+            # Cut off the extension of the file
+            end = os.path.splitext(striclyFileNames[fileCounter])[1]
             previousFileNameArr.append(originalFileName)
 
             os.chdir(distFolder)
@@ -219,14 +222,14 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
             originalFile.close()
             newFile.close()
             fileCounter += 1
-            os.chdir(directoryName)
+            os.chdir(directoryPath)
 
         # Create Custom Index html page with links to all the created files
         print("Creating HTML file")
         os.chdir(distFolder)
         indexPage = open("index.html", "w")
         indexPage.write("<!doctype html>\n")
-        newFile.write('<html lang="' + lang + '">\n')
+        indexPage.write('<html lang="' + lang + '>\n')
         indexPage.write("<head>\n")
         indexPage.write('\t<meta charset="utf-8">\n')
         indexPage.write("\t<title>" + "Index" + "</title>\n")
@@ -264,7 +267,7 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
             newFile = open(aFile + ".html", "w")  # Create new File under html extension
             newFile = open(aFile + ".html", "a")  # Open file to append contents
             newFile.write("<!doctype html>\n")
-            newFile.write('<html lang="' + languageVar + '">\n')
+            newFile.write('<html lang="' + lang + '">\n')
             newFile.write("<head>\n")
             newFile.write('\t<meta charset="utf-8">\n')
             newFile.write("\t<title>" + aFile + "</title>\n")
@@ -327,13 +330,12 @@ if __name__ == "__main__":
     long_opts = ["help", "input=", "output=", "version", "lang="]
     temp = sys.argv
     arguments = temp[1:]
-    languageVar = ""
+    lang = ""
     isCustomDirectory = False
     arrayOfFiles = []
     customDirectoryPath = ""
     workingDirectoryPath = os.getcwd()
     distFolder = workingDirectoryPath + "/dist"
-
     try:
         arg, values = getopt.getopt(arguments, short_opts, long_opts)
     except getopt.error as error:
@@ -359,7 +361,7 @@ if __name__ == "__main__":
                 )
                 print("To specify input use: --input= or -i=")
             elif curr_arg in ("--lang", "-l"):
-                languageVar = curr_value
+                lang = curr_value
             elif curr_arg in ("--output", "-o"):
                 if os.path.isdir(curr_value):
                     print("Output Directory has been changed to " + curr_value)
@@ -370,18 +372,18 @@ if __name__ == "__main__":
                         "ERROR: Directory does not exist! Please enter a valid directory"
                     )
             elif curr_arg in ("--input", "-i"):
-                if languageVar == "":
-                    languageVar = "en-CA"
+                if lang == "":
+                    lang = "en-CA"
                 if os.path.isdir(curr_value):
                     print("Working on Directory")
-                    # dirName = curr_value
+                    dirName = curr_value
                     for i in os.listdir(curr_value):
                         if fnmatch.fnmatch(i, "*.txt") or fnmatch.fnmatch(i, "*.md"):
                             arrayOfFiles.append(i)
-                    conversionFuncFolder(languageVar, curr_value, isCustomDirectory, customDirectoryPath, distFolder)
+                    conversionFuncFolder(lang, dirName, isCustomDirectory, arrayOfFiles ,customDirectoryPath, distFolder)
                 else:
                     print("Working on File " + curr_value)
                     arrayOfFiles.append(curr_value)
-                    conversionFuncFile(languageVar, isCustomDirectory, arrayOfFiles, customDirectoryPath, distFolder)
+                    conversionFuncFile(lang, isCustomDirectory, arrayOfFiles, customDirectoryPath, distFolder)
             else:
                 print("Error")
