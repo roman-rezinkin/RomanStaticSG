@@ -7,6 +7,7 @@ import getopt
 import os
 import fnmatch
 import shutil
+import json
 
 # Functions
 # Converting txt files
@@ -333,8 +334,8 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
 # Main Logic
 if __name__ == "__main__":
     # Local Variables
-    short_opts = "hiovl"
-    long_opts = ["help", "input=", "output=", "version", "lang="]
+    short_opts = "hiovlc"
+    long_opts = ["help", "input=", "output=", "version", "lang=", "config="]
     temp = sys.argv
     arguments = temp[1:]
     lang = ""
@@ -367,6 +368,9 @@ if __name__ == "__main__":
                     "To specify an input, use either a file or a folder with items inside of it"
                 )
                 print("To specify input use: --input= or -i=")
+            elif curr_arg in ("--config", "-c"):
+                with open(curr_value, "r") as f:
+                    config = json.load(f)
             elif curr_arg in ("--lang", "-l"):
                 lang = curr_value
             elif curr_arg in ("--output", "-o"):
