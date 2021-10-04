@@ -267,6 +267,7 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
             previousFileNameArr.append(aFile)
             
             tempCustomDirectoryPath = os.path.join('../', customDirectoryPath)
+            os.chdir(tempCustomDirectoryPath)
             # Creating the new file template
             newFile = open(aFile + ".html", "w")  # Create new File under html extension
             newFile = open(aFile + ".html", "a")  # Open file to append contents
