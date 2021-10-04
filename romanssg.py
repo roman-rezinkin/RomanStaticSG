@@ -229,7 +229,7 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
         os.chdir(distFolder)
         indexPage = open("index.html", "w")
         indexPage.write("<!doctype html>\n")
-        indexPage.write('<html lang="' + lang + '>\n')
+        indexPage.write('<html lang="' + lang + '">\n')
         indexPage.write("<head>\n")
         indexPage.write('\t<meta charset="utf-8">\n')
         indexPage.write("\t<title>" + "Index" + "</title>\n")
@@ -247,6 +247,7 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
     else:
         # Change to specified Folder
         os.chdir(directoryName)
+        print("The directory name is: " + directoryName)
         # Gather local files and convert them into usable paths
         for i in arrayOfFiles:
             striclyFileNames.append(i)
@@ -255,14 +256,17 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
 
         # Main logic
         for aFile in arrayOfFiles:
-            # os.chdir(dirName)
+            # Read current existing file
             originalFile = open(
                 aFile, "r", encoding="utf8"
-            )  # Read current existing file
-            os.chdir(customDirectoryPath)  # Change directories
-            aFile, end = os.path.splitext(aFile)[0]  # Cut off the extension of the file
-            previousFileNameArr.append(aFile)
+            )  
 
+            directoryPath = os.getcwd()
+            aFile = os.path.splitext(aFile)[0]  # Cut off the extension of the file
+            end = os.path.splitext(aFile)[1]
+            previousFileNameArr.append(aFile)
+            
+            tempCustomDirectoryPath = os.path.join('../', customDirectoryPath)
             # Creating the new file template
             newFile = open(aFile + ".html", "w")  # Create new File under html extension
             newFile = open(aFile + ".html", "a")  # Open file to append contents
@@ -300,10 +304,10 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
 
             originalFile.close()
             newFile.close()
-            os.chdir(directoryName)
+            os.chdir(directoryPath)
 
         # Create Custom Index html page with links to all the created files
-        os.chdir(customDirectoryPath)
+        os.chdir(tempCustomDirectoryPath)
         indexPage = open("index.html", "w")
         indexPage.write("<!doctype html>\n")
         indexPage.write('<html lang="en">\n')
