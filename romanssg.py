@@ -247,7 +247,6 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
     else:
         # Change to specified Folder
         os.chdir(directoryName)
-        print("The directory name is: " + directoryName)
         # Gather local files and convert them into usable paths
         for i in arrayOfFiles:
             striclyFileNames.append(i)
@@ -255,19 +254,21 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
             localArrOfFiles.append(temp)
 
         # Main logic
-        for aFile in arrayOfFiles:
+        for aFile in localArrOfFiles:
             # Read current existing file
             originalFile = open(
                 aFile, "r", encoding="utf8"
             )  
 
             directoryPath = os.getcwd()
-            aFile = os.path.splitext(aFile)[0]  # Cut off the extension of the file
-            end = os.path.splitext(aFile)[1]
+            aFile = os.path.splitext(striclyFileNames[fileCounter])[0]  # Cut off the extension of the file
+            end = os.path.splitext(striclyFileNames[fileCounter])[1]
             previousFileNameArr.append(aFile)
             
             tempCustomDirectoryPath = os.path.join('../', customDirectoryPath)
             os.chdir(tempCustomDirectoryPath)
+            print(os.getcwd())
+            print(aFile)
             # Creating the new file template
             newFile = open(aFile + ".html", "w")  # Create new File under html extension
             newFile = open(aFile + ".html", "a")  # Open file to append contents
@@ -305,6 +306,7 @@ def conversionFuncFolder(lang, directoryName, isCustomDirectory, arrayOfFiles, c
 
             originalFile.close()
             newFile.close()
+            fileCounter += 1
             os.chdir(directoryPath)
 
         # Create Custom Index html page with links to all the created files
