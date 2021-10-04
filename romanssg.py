@@ -371,8 +371,7 @@ if __name__ == "__main__":
                 print("To specify input use: --input= or -i=")
             elif curr_arg in ("--config", "-c"):
                 # Override other args
-                arg.clear()
-                arg.append((curr_arg, curr_value))
+                arg[:len(arg)]
 
                 # Open json and store in config
                 try:
