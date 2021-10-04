@@ -387,6 +387,7 @@ if __name__ == "__main__":
                     sys.exit(1)
 
                 # Order the args from the json
+                # (Needs to be done because order of args matters with this script)
                 config_list = []
                 if "lang" in config:
                     config_list.append(("--lang", config["lang"]))
