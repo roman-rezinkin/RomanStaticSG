@@ -369,8 +369,22 @@ if __name__ == "__main__":
                 )
                 print("To specify input use: --input= or -i=")
             elif curr_arg in ("--config", "-c"):
+                arg.clear()
+                arg.append((curr_arg, curr_value))
+
                 with open(curr_value, "r") as f:
                     config = json.load(f)
+
+                config_list = []
+                if "lang" in config:
+                    config_list.append(("--lang", config["lang"]))
+                if "output" in config:
+                    config_list.append(("--output", config["output"]))
+                if "input" in config:
+                    config_list.append(("--input", config["input"]))
+
+                for argument in config_list:
+                    arg.append(argument)
             elif curr_arg in ("--lang", "-l"):
                 lang = curr_value
             elif curr_arg in ("--output", "-o"):
