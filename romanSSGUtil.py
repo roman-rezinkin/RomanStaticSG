@@ -1,5 +1,6 @@
 import os
 import shutil
+import markdown
 
 # Functions
 def getLocalFiles(arrayOfFiles):
@@ -35,13 +36,13 @@ def createIndexPage(hmtlLang, previousFileNameArr):
 def writeToFile(hmtlLang, aFile, fileCounter, striclyFileNames):
     # Read Current Existing File
     originalFile = open(aFile, "r", encoding="utf8")  # Read existing file
-    
     originalFileName, end = os.path.splitext(striclyFileNames[fileCounter])  # Cut off the extension of the file
-
+    temp = originalFile.read().splitlines()
+    checkForTheme = temp
+    
     # Create new File under html Extension, and open file.
     newFile = open(originalFileName + ".html", "w")
     newFile = open(originalFileName + ".html", "a")
-
     # Write main html section
     newFile.write("<!doctype html>\n")
     newFile.write('<html lang="' + hmtlLang + '">\n')
@@ -49,29 +50,35 @@ def writeToFile(hmtlLang, aFile, fileCounter, striclyFileNames):
     newFile.write('\t<meta charset="utf-8">\n')
     newFile.write("\t<title>" + originalFileName + "</title>\n")
     newFile.write('\t<meta name="viewport" content="width=device-width, initial-scale=1">\n')
+    for i in checkForTheme:
+        if i.startswith("theme"):
+            if 'dark' or 'Dark' in i:
+                print("We here")
+                createCSSFile(True)
+                newFile.write('\t<link rel="stylesheet" href="main.css" type="text/css">\n')
+                temp.pop(0)
     newFile.write("</head>\n")
     newFile.write("<body>\n")
-
     # Bulk of Main Logic of reading file and putting it into html file.
-    temp = originalFile.read().splitlines()
     for i in temp:  # Loop through the file we opened
-                if i != "":  # We dont want <p> tags created for new lines
-                    if end == ".txt":
-                        newFile.write("\t<p>" + i + "</p>\n")
-                    if end == ".md":
-                        # generate level 1 heading based on .md file
-                        if i.startswith("# "):
-                            i = i.replace("# ", "<h1>")
-                            newFile.write("\t" + i + "</h1>\n")
-                        elif i.startswith("---"):
-                            i = i.replace("---", "<hr>")
-                            newFile.write("\n\t" + i + "\n\n")
-                        else:
-                            newFile.write("\t<p>" + i + "</p>\n")
+        if i != "":  # We dont want <p> tags created for new lines
+            if end == ".txt":
+                newFile.write("\t<p>" + i + "</p>\n")
+            if end == ".md":
+                newFile.write("\t" + markdown.markdown(i) + '\n')
     newFile.write("</body>\n")
     newFile.write("</html>")
     originalFile.close()
     newFile.close()
+
+# Create CSS file
+def createCSSFile(hasThemeColor):
+    if hasThemeColor:
+        cssFile = open("main.css", "w")
+        cssFile = open("main.css", "a")
+        cssFile.write("body{background-color: #2a2b2d}" + "\n")
+        cssFile.write("p, h1, h2, h3, h4, li, ul, code{color: #fefefe}" + "\n")
+        cssFile.close()
 
 # Converting txt files
 def conversionFuncFile(lang, isCustomDirectory, arrayOfFiles, customDirectoryPath, distFolder):
