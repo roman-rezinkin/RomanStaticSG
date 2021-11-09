@@ -160,8 +160,9 @@ def conversion_func_folder(
         # Change to specified Folder
         os.chdir(directory_name)
         directoryPath = os.getcwd()
+        print(array_of_files)
         localFiles = get_local_files(array_of_files)
-
+        # rint(localFiles)
         # Main Logic
         for file in localFiles:
             previousFileNameArr.append(

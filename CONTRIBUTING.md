@@ -15,22 +15,26 @@ For this project, we highly suggest using Visual Studio Code. We have a common s
 This project utilizes the python formatter by the name of "black". Please run this section before committing or pushing any code!
 ### Installing and Using the Formatter
 Run this in your command line to install the formatting:
-1.    pip install black
-
+```
+pip install black
+```
 Run this shell script anytime you want to format the two files.
-1.    bash formatting.sh
-
+```
+bash formatting.sh
+```
 If a new file is introduced, please edit formatting.sh and add the file to the script
 
 ## Linting your code
 This project utilizes pylint to lint the code to ensure that the conventions of the code are up to standards with PEP8
 
 Run the following command line to install the linter:
-1.    pip install pylint
-
+```
+pip install pylint
+```
 Run this shell script anytime to lint the files
-1.    bash linter.sh
-
+```
+bash linter.sh
+```
 If a new file is introduced, please edit linter.sh and add the file to the script
 
 ## Developing changes
@@ -40,4 +44,17 @@ Once you have introduced a new feature, please commit all your changes and creat
 
 Once the PR is approved, feel free to merge the changes into the master branch
 
-
+## Testing your changes
+This project utilizes pytest. We implemented it inorder to ensure the code that is written operates correctly. Whenever you introduce a new function or change any kind of code within our static site generator, it is essential to introduce or change the tests.
+### Setting up Pytest
+Run the following command:
+```
+pip install -U pytest
+```
+I highly recommend using Visual Studio as we have setup a settings.json that enables auto rerunning of tests, as well it features a nice UI that allows for running individual tests and all the tests combined.
+### Writing the tests
+For pytest to work please follow the following syntax when naming a specific test
+```
+test_some_function_test
+```
+It is important to include the test in the first part of the test as thats the only way that pytest understands that it is a test
