@@ -5,6 +5,7 @@ import roman_ssg_util
 
 
 def setup_test():
+    """Setup Tests for tests"""
     os.chdir(os.getcwd())
     if os.path.isdir("dist"):
         shutil.rmtree("dist")
@@ -30,6 +31,12 @@ def test_create_css_file():
     roman_ssg_util.create_css_file(True)
     assert os.path.isfile("./main.css")
     os.remove("main.css")
+
+
+def test_create_css_file_fail():
+    """Test fail of Create CSS File function"""
+    roman_ssg_util.create_css_file(False)
+    assert not os.path.isfile("./main.css")
 
 
 def test_write_to_file():
