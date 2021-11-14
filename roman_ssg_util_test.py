@@ -82,7 +82,7 @@ def test_conversion_func_file_non_custom_dir():
 
 def test_conversion_func_file_custom_dir():
     """Test Conversion File function with Custom Directory"""
-    os.chdir("..")
+    # os.chdir("..")
     setup_test()
     fileArr = []
     fileArr.append("example.txt")
