@@ -26,6 +26,12 @@ def test_get_local_files():
         ]
 
 
+def test_create_index_page():
+    roman_ssg_util.create_index_page("en-US", ["1.html"])
+    assert os.path.isfile("./index.html")
+    os.remove("index.html")
+
+
 def test_create_css_file():
     """Test Create CSS File function"""
     roman_ssg_util.create_css_file(True)
