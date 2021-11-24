@@ -8,7 +8,7 @@ import getopt
 import os
 import fnmatch
 import json
-import roman_ssg_util
+from . import roman_ssg_util
 
 # Main Logic
 if __name__ == "__main__":
@@ -41,7 +41,8 @@ if __name__ == "__main__":
                     "Commands: \nTo get version number use the command: --version, -v"
                 )
                 print(
-                    "To change the output directory to a user specified directory, run --output= or -o="
+                    "To change the output directory to a user specified directory, \
+                    run --output= or -o="
                 )
                 print(
                     "To specify an input, use either a \

@@ -1,7 +1,7 @@
 """Testing File for roman_ssg_util"""
 import os
 import shutil
-import roman_ssg_util
+import src.staticsg.roman_ssg_util
 
 
 def setup_test():
@@ -17,25 +17,25 @@ def test_get_local_files():
     """Test get_local_files function"""
     tempArr = ["File1.txt"]
     if os.name == "posix":
-        assert roman_ssg_util.get_local_files(tempArr) == [
+        assert src.staticsg.roman_ssg_util.get_local_files(tempArr) == [
             os.getcwd() + "/" + "File1.txt"
         ]
     else:
-        assert roman_ssg_util.get_local_files(tempArr) == [
+        assert src.staticsg.roman_ssg_util.get_local_files(tempArr) == [
             os.getcwd() + "\\" + "File1.txt"
         ]
 
 
 def test_create_css_file():
     """Test Create CSS File function"""
-    roman_ssg_util.create_css_file(True)
+    src.staticsg.roman_ssg_util.create_css_file(True)
     assert os.path.isfile("./main.css")
     os.remove("main.css")
 
 
 def test_create_css_file_fail():
     """Test fail of Create CSS File function"""
-    roman_ssg_util.create_css_file(False)
+    src.staticsg.roman_ssg_util.create_css_file(False)
     assert not os.path.isfile("./main.css")
 
 
@@ -45,12 +45,12 @@ def test_write_to_file():
         filePath = os.getcwd() + "/" + "example.txt"
     else:
         filePath = os.getcwd() + "\\" + "example.txt"
-    roman_ssg_util.write_to_file(
-        "en-CA",
-        filePath,
-        0,
-        ["example.txt"],
-    )
+        src.staticsg.roman_ssg_util.write_to_file(
+            "en-CA",
+            filePath,
+            0,
+            ["example.txt"],
+        )
     assert os.path.isfile("example.html")
     os.remove("example.html")
 
@@ -61,7 +61,7 @@ def test_conversion_func_file_non_custom_dir():
     fileArr.append("example.txt")
     fileArr.append("test.md")
     if os.name == "posix":
-        roman_ssg_util.conversion_func_file(
+        src.staticsg.roman_ssg_util.conversion_func_file(
             "en-CA",
             False,
             fileArr,
@@ -69,7 +69,7 @@ def test_conversion_func_file_non_custom_dir():
             os.getcwd() + "/" + "dist",
         )
     else:
-        roman_ssg_util.conversion_func_file(
+        src.staticsg.roman_ssg_util.conversion_func_file(
             "en-CA",
             False,
             fileArr,
@@ -89,7 +89,7 @@ def test_conversion_func_file_custom_dir():
     fileArr.append("test.md")
     os.mkdir("testCustomDirectory")
     if os.name == "posix":
-        roman_ssg_util.conversion_func_file(
+        src.staticsg.roman_ssg_util.conversion_func_file(
             "en-CA",
             True,
             fileArr,
@@ -97,7 +97,7 @@ def test_conversion_func_file_custom_dir():
             os.getcwd() + "/" + "dist",
         )
     else:
-        roman_ssg_util.conversion_func_file(
+        src.staticsg.roman_ssg_util.conversion_func_file(
             "en-CA",
             True,
             fileArr,
@@ -119,7 +119,7 @@ def test_converstion_func_folder_non_custom_dir():
     arrayOfFiles.append("The Naval Treaty.txt")
     arrayOfFiles.append("The Red Headed League.txt")
     if os.name == "posix":
-        roman_ssg_util.conversion_func_folder(
+        src.staticsg.roman_ssg_util.conversion_func_folder(
             "en-CA",
             os.getcwd() + "/" + "Sherlock-Holmes-Selected-Stories",
             False,
@@ -128,7 +128,7 @@ def test_converstion_func_folder_non_custom_dir():
             os.getcwd() + "/" + "dist",
         )
     else:
-        roman_ssg_util.conversion_func_folder(
+        src.staticsg.roman_ssg_util.conversion_func_folder(
             "en-CA",
             os.getcwd() + "\\" + "Sherlock-Holmes-Selected-Stories",
             False,
@@ -160,7 +160,7 @@ def test_converstion_func_folder_custom_dir():
     else:
         os.mkdir("testCustomDirectory")
     if os.name == "posix":
-        roman_ssg_util.conversion_func_folder(
+        src.staticsg.roman_ssg_util.conversion_func_folder(
             "en-CA",
             os.getcwd() + "/" + "Sherlock-Holmes-Selected-Stories",
             True,
@@ -169,7 +169,7 @@ def test_converstion_func_folder_custom_dir():
             os.getcwd() + "/" + "dist",
         )
     else:
-        roman_ssg_util.conversion_func_folder(
+        src.staticsg.roman_ssg_util.conversion_func_folder(
             "en-CA",
             os.getcwd() + "\\" + "Sherlock-Holmes-Selected-Stories",
             True,
