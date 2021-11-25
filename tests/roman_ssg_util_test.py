@@ -68,6 +68,7 @@ def test_conversion_func_file_non_custom_dir():
     if os.name == "posix":
         fileArr.append("example.txt")
         fileArr.append("test.md")
+        os.chdir(os.getcwd() + "/tests/testResources")
         src.staticsg.roman_ssg_util.conversion_func_file(
             "en-CA",
             False,
