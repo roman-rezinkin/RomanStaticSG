@@ -5,8 +5,8 @@ Main Static Site Functionality
 import sys
 import os
 import fnmatch
-from roman_ssg_util import conversion_func_file, conversion_func_folder, configFileRead
 import argparse
+from roman_ssg_util import conversion_func_file, conversion_func_folder, configFileRead
 
 # Main Logic
 def main(arguments):
@@ -29,30 +29,30 @@ def main(arguments):
     workingDirectoryPath = os.getcwd()
     distFolder = workingDirectoryPath + "/dist"
     arrayOfFiles = []
-    customDirectoryPath = ""
 
     if arguments.config is not None:
         input, lang = configFileRead(arguments.config)
     else:
         input = arguments.input
         lang = arguments.lang
+
     if arguments.output:
         outputDirectory = arguments.output
         isCustomDirectory = True
-        print("Output Directory has been changed to " + arguments.output)
+        print("Output Directory has been changed to: " + arguments.output)
         if os.path.isdir(input):
             print("Working on Directory: " + input)
             for i in os.listdir(input):
                 if fnmatch.fnmatch(i, "*.txt") or fnmatch.fnmatch(i, "*.md"):
                     arrayOfFiles.append(i)
-                conversion_func_folder(
-                    lang,
-                    input,
-                    isCustomDirectory,
-                    arrayOfFiles,
-                    outputDirectory,
-                    distFolder,
-                )
+            conversion_func_folder(
+                lang,
+                input,
+                isCustomDirectory,
+                arrayOfFiles,
+                outputDirectory,
+                distFolder,
+            )
         else:
             print("Working on a File")
             arrayOfFiles.append(input)
@@ -65,14 +65,14 @@ def main(arguments):
             for i in os.listdir(input):
                 if fnmatch.fnmatch(i, "*.txt") or fnmatch.fnmatch(i, "*.md"):
                     arrayOfFiles.append(i)
-                conversion_func_folder(
-                    lang,
-                    input,
-                    isCustomDirectory,
-                    arrayOfFiles,
-                    "",
-                    distFolder,
-                )
+            conversion_func_folder(
+                lang,
+                input,
+                isCustomDirectory,
+                arrayOfFiles,
+                "",
+                distFolder,
+            )
         else:
             print("Working on a File")
             arrayOfFiles.append(input)
