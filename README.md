@@ -8,14 +8,14 @@ RomanStaticSG is made in python. It is a simple static site generator. It accept
 ### Method 1
 RomanStaticSG is now released with v1.0.4.
 To install RomanStaticSG simply enter:  
-
+```python
     pip install staticsg-rrezinkin
-
+```
 To use the static site generator, import it as following:  
-
+```python
     from staticsg import romanssg
-    
     romanssg.main(sys.argv[1:])
+```
 A list of [arguments](#command_list) can be found below.
 
 ### Method 2
