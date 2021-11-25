@@ -31,7 +31,7 @@ If you run the input command and don't specify the output command, a local folde
 ## <a name="command_list"></a>Command List
 ### Help Screen 
 ```c
-    python src/staticsg/romanssg.py --help  |  python romanssg.py -h  
+    python romanssg.py --help  |  python romanssg.py -h  
       
     Help Screen  
     Usage: python romanssg.py
@@ -45,7 +45,7 @@ If you run the input command and don't specify the output command, a local folde
     python romanssg.py --version  |   python romanssg.py -v
 
     Welcome to the RomanStaticSG, a Static Site Generator  
-    The current version is: 0.1  
+    The current version is: 1.0.4
 ```
 ### Input Command
 To run the input command specify the file name **with** the extension  
