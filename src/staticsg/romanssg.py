@@ -14,7 +14,7 @@ def main(arguments):
     parser = argparse.ArgumentParser(description="Roman Static Site Generator")
     parser.add_argument("--input", "-i", help="Specify input file")
     parser.add_argument(
-        "--version", "-v", action="version", version="1.0.2", help="Show version"
+        "--version", "-v", action="version", version="1.0.4", help="Show version"
     )
     parser.add_argument("-o", "--output", help="Specify a custom output destination")
     parser.add_argument(
