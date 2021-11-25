@@ -5,13 +5,26 @@ RomanStaticSG is made in python. It is a simple static site generator. It accept
 
 ## How to Use RomanStaticSG
 ***Python 3.9+ Required***  
-To use RomanStaticSG simply type  
-  
+### Method 1
+RomanStaticSG is now released with v1.0.4.
+To install RomanStaticSG simply enter:  
+
+    pip install staticsg-rrezinkin
+
+To use the static site generator, import it as following:  
+
+    from staticsg import romanssg
+    
+    romanssg.main(sys.argv[1:])
+The [arguments](#command_list) are the same as found below
+
+### Method 2
+Fork and clone this repository. Then execute the following commands within the RomanStaticSG folder
     
     python romanssg.py --help
 
 When running the command input command and not specifying the output command, a local folder named "dist" will be created in the directory of the existing file
-## Command List
+## <a name="command_list"></a>Command List
 ### Help Screen 
     python romanssg.py --help  |  python romanssg.py -h  
       
