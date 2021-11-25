@@ -51,12 +51,12 @@ def test_write_to_file():
         filePath = os.getcwd() + "/" + "example.txt"
     else:
         filePath = os.getcwd() + "\\" + "example.txt"
-        src.staticsg.roman_ssg_util.write_to_file(
-            "en-CA",
-            filePath,
-            0,
-            ["example.txt"],
-        )
+    src.staticsg.roman_ssg_util.write_to_file(
+        "en-CA",
+        filePath,
+        0,
+        ["example.txt"],
+    )
     assert os.path.isfile("example.html")
     os.remove("example.html")
 
