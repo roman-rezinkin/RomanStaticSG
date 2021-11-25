@@ -10,13 +10,11 @@ import fnmatch
 import json
 from . import roman_ssg_util
 
-# Main Logic
-if __name__ == "__main__":
+
+def main(arguments):
     # Local Variables
     SHORT_OPTS = "hiovlc"
     LONG_OPTS = ["help", "input=", "output=", "version", "lang=", "config="]
-    temp = sys.argv
-    arguments = temp[1:]
     LANG = ""
     IS_CUSTOMDIRECTORY = False
     arrayOfFiles = []
@@ -120,3 +118,8 @@ if __name__ == "__main__":
                     )
             else:
                 print("Error")
+
+
+# Main Logic
+if __name__ == "__main__":
+    main(sys.argv[1:])
