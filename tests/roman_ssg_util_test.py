@@ -27,7 +27,7 @@ def test_get_local_files():
 
 
 def test_create_index_page():
-    roman_ssg_util.create_index_page("en-US", ["1.html"])
+    src.staticsg.roman_ssg_util.create_index_page("en-US", ["1.html"])
     assert os.path.isfile("./index.html")
     os.remove("index.html")
 
