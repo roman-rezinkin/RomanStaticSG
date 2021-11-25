@@ -19,7 +19,7 @@ To use the static site generator, import it as following:
 A list of [arguments](#command_list) can be found below.
 
 ### Method 2
-Fork and clone this repository. Then execute the following commands within the RomanStaticSG folder
+Fork and clone this repository. Then execute any of the following [commands](#command_list) within the RomanStaticSG folder
     
     python romanssg.py --help
 
