@@ -5,9 +5,12 @@
     "editor.formatOnSave": true,
     "python.formatting.provider": "black",
     "python.testing.pytestArgs": [
-        "./roman_ssg_util_test.py"
+        "./tests/roman_ssg_util_test.py"
     ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    "python.analysis.extraPaths": [
+        "./src/staticsg/"
+    ]
 }

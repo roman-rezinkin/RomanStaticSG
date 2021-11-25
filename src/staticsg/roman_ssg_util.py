@@ -4,6 +4,8 @@ Utility Static Site Functionality
 import os
 import shutil
 import markdown
+from json.decoder import JSONDecodeError
+import json
 
 
 def get_local_files(array_of_files):
@@ -200,3 +202,26 @@ def conversion_func_folder(
         os.chdir(tempCustomDirectoryPath)
         create_index_page(lang, previousFileNameArr)
         print("\n--- SUCCESS ---")
+
+
+def configFileRead(config):
+    """Configuration File Interpreter"""
+    try:
+        with open(config, "rb") as f:
+            try:
+                config = json.load(f)
+                for i in config:
+                    if i == "i" or i == "input":
+                        input = config[i]
+                    if i == "l" or i == "lang":
+                        lang = config[i]
+                    if input == "":
+                        print("No input file specified!")
+                        exit(1)
+                return input, lang
+            except JSONDecodeError:
+                print("Invalid JSON")
+                exit(1)
+    except FileNotFoundError:
+        print("Config file not found")
+        exit(1)
