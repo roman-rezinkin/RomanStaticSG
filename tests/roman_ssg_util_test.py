@@ -7,10 +7,16 @@ import src.staticsg.roman_ssg_util
 def setup_test():
     """Setup Tests for tests"""
     os.chdir(os.getcwd())
-    if os.path.isdir("dist"):
-        shutil.rmtree("dist")
-    if os.path.isdir("testCustomDirectory"):
-        shutil.rmtree("testCustomDirectory")
+    if os.name == "posix":
+        if os.path.isdir("/tests/testResources/dist"):
+            shutil.rmtree("/tests/testResources/dist")
+        if os.path.isdir("/tests/testResources/testCustomDirectory"):
+            shutil.rmtree("/tests/testResources/testCustomDirectory")
+    else:
+        if os.path.isdir("\\tests\\testResources\\dist"):
+            shutil.rmtree("\\tests\\testResources\\dist")
+        if os.path.isdir("\\tests\\testResources\\testCustomDirectory"):
+            shutil.rmtree("\\tests\\testResources\\testCustomDirectory")
 
 
 def test_get_local_files():
@@ -48,15 +54,10 @@ def test_create_css_file_fail():
 def test_write_to_file():
     """Test write_to_file function"""
     if os.name == "posix":
-        filePath = os.getcwd() + "/" + "example.txt"
+        filePath = os.getcwd() + "/tests/testResources/" + "example.txt"
     else:
-        filePath = os.getcwd() + "\\" + "example.txt"
-    src.staticsg.roman_ssg_util.write_to_file(
-        "en-CA",
-        filePath,
-        0,
-        ["example.txt"],
-    )
+        filePath = os.getcwd() + "\\tests\\testResources\\" + "example.txt"
+    src.staticsg.roman_ssg_util.write_to_file("en-CA", filePath, "example.txt")
     assert os.path.isfile("example.html")
     os.remove("example.html")
 
@@ -64,9 +65,9 @@ def test_write_to_file():
 def test_conversion_func_file_non_custom_dir():
     """Test Conversion File function without Custom Directory"""
     fileArr = []
-    fileArr.append("example.txt")
-    fileArr.append("test.md")
     if os.name == "posix":
+        fileArr.append("example.txt")
+        fileArr.append("test.md")
         src.staticsg.roman_ssg_util.conversion_func_file(
             "en-CA",
             False,
@@ -74,7 +75,12 @@ def test_conversion_func_file_non_custom_dir():
             "",
             os.getcwd() + "/" + "dist",
         )
+        assert os.path.isfile(os.getcwd() + "/example.html")
+        assert os.path.isfile(os.getcwd() + "/test.html")
     else:
+        fileArr.append("example.txt")
+        fileArr.append("test.md")
+        os.chdir(os.getcwd() + "\\tests\\testResources")
         src.staticsg.roman_ssg_util.conversion_func_file(
             "en-CA",
             False,
@@ -82,8 +88,8 @@ def test_conversion_func_file_non_custom_dir():
             "",
             os.getcwd() + "\\" + "dist",
         )
-    assert os.path.isfile("example.html")
-    assert os.path.isfile("test.html")
+        assert os.path.isfile(os.getcwd() + "\\example.html")
+        assert os.path.isfile(os.getcwd() + "\\test.html")
 
 
 def test_conversion_func_file_custom_dir():
@@ -91,27 +97,36 @@ def test_conversion_func_file_custom_dir():
     os.chdir("..")
     setup_test()
     fileArr = []
-    fileArr.append("example.txt")
-    fileArr.append("test.md")
-    os.mkdir("testCustomDirectory")
     if os.name == "posix":
+        fileArr.append("example.txt")
+        fileArr.append("test.md")
+        os.mkdir("testCustomDirectory")
         src.staticsg.roman_ssg_util.conversion_func_file(
             "en-CA",
             True,
             fileArr,
             os.getcwd() + "/" + "testCustomDirectory",
-            os.getcwd() + "/" + "dist",
+            "",
+        )
+        assert os.path.isfile(
+            os.getcwd() + "/tests/testResources/testCustomDirectory/example.html"
+        )
+        assert os.path.isfile(
+            os.getcwd() + "/tests/testResources/testCustomDirectory/test.html"
         )
     else:
+        fileArr.append("example.txt")
+        fileArr.append("test.md")
+        os.mkdir("testCustomDirectory")
         src.staticsg.roman_ssg_util.conversion_func_file(
             "en-CA",
             True,
             fileArr,
-            os.getcwd() + "\\" + "testCustomDirectory",
-            os.getcwd() + "\\" + "dist",
+            os.getcwd() + "\\testCustomDirectory",
+            "",
         )
-    assert os.path.isfile("example.html")
-    assert os.path.isfile("test.html")
+        assert os.path.isfile("example.html")
+        assert os.path.isfile("test.html")
 
 
 def test_converstion_func_folder_non_custom_dir():
@@ -172,7 +187,7 @@ def test_converstion_func_folder_custom_dir():
             True,
             arrayOfFiles,
             os.getcwd() + "/" + "testCustomDirectory",
-            os.getcwd() + "/" + "dist",
+            "",
         )
     else:
         src.staticsg.roman_ssg_util.conversion_func_folder(
@@ -181,7 +196,7 @@ def test_converstion_func_folder_custom_dir():
             True,
             arrayOfFiles,
             os.getcwd() + "\\" + "testCustomDirectory",
-            os.getcwd() + "\\" + "dist",
+            "",
         )
     assert os.path.isfile("Silver Blaze.html")
     assert os.path.isfile("The Adventure of the Six Napoleans.html")
@@ -190,3 +205,5 @@ def test_converstion_func_folder_custom_dir():
     assert os.path.isfile("The Red Headed League.html")
     os.chdir("..")
     shutil.rmtree("testCustomDirectory")
+    # print(os.getcwd())
+    # setup_test()

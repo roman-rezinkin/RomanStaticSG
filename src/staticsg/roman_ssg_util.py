@@ -40,12 +40,12 @@ def create_index_page(hmtl_lang, previous_filename_arr):
             counter += 1
 
 
-def write_to_file(html_lang, a_file, file_counter, stricly_file_names):
+def write_to_file(html_lang, a_file, stricly_file_names):
     """Write to file Function"""
     # Read Current Existing File
     with open(a_file, "r", encoding="utf8") as originalFile:  # Read existing file
         originalFileName, end = os.path.splitext(
-            stricly_file_names[file_counter]
+            stricly_file_names
         )  # Cut off the extension of the file
         temp = originalFile.read().splitlines()
     checkForTheme = temp
@@ -113,11 +113,10 @@ def conversion_func_file(
         except OSError as error:
             print("\n--- FAILURE ---")
             print(error)
-
         for i in localFiles:
             os.chdir(dist_folder)  # Change directories
             write_to_file(
-                lang, i, fileCounter, striclyFileNames
+                lang, i, striclyFileNames[fileCounter]
             )  # Call the Write Function
             fileCounter += 1
         print("\n--- SUCCESS ---")
@@ -125,7 +124,9 @@ def conversion_func_file(
         for file in localFiles:
             os.chdir(custom_directory_path)  # Change directories
             write_to_file(
-                lang, file, fileCounter, striclyFileNames
+                lang,
+                file,
+                striclyFileNames[fileCounter],
             )  # Call the Write Function
             fileCounter += 1
         print("\n--- SUCCESS ---")
@@ -164,14 +165,13 @@ def conversion_func_folder(
         directoryPath = os.getcwd()
         print(array_of_files)
         localFiles = get_local_files(array_of_files)
-        # rint(localFiles)
         # Main Logic
         for file in localFiles:
             previousFileNameArr.append(
                 os.path.splitext(striclyFileNames[fileCounter])[0]
             )
             os.chdir(dist_folder)
-            write_to_file(lang, file, fileCounter, striclyFileNames)
+            write_to_file(lang, file, striclyFileNames[fileCounter])
             fileCounter += 1
             os.chdir(directoryPath)
 
@@ -194,7 +194,7 @@ def conversion_func_folder(
             )
             tempCustomDirectoryPath = os.path.join("../", custom_directory_path)
             os.chdir(tempCustomDirectoryPath)
-            write_to_file(lang, file, fileCounter, striclyFileNames)
+            write_to_file(lang, file, striclyFileNames[fileCounter])
             fileCounter += 1
             os.chdir(directoryPath)
 

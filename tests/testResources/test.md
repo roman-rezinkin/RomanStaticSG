@@ -1,4 +1,3 @@
-theme=dark
 # Topics in Open Source Development (Fall 2021)
 
 Course Code: [DPS909](http://www.senecacollege.ca/cgi-bin/subject?s1=DPS909) and [OSD600](http://www.senecacollege.ca/cgi-bin/subject?s1=OSD600)
