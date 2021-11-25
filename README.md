@@ -16,7 +16,7 @@ To use the static site generator, import it as following:
     from staticsg import romanssg
     
     romanssg.main(sys.argv[1:])
-The [arguments](#command_list) are the same as found below
+A list of [arguments](#command_list) can be found below.
 
 ### Method 2
 Fork and clone this repository. Then execute the following commands within the RomanStaticSG folder
