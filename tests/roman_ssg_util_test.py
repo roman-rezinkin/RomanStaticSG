@@ -109,12 +109,8 @@ def test_conversion_func_file_custom_dir():
             os.getcwd() + "/" + "testCustomDirectory",
             "",
         )
-        assert os.path.isfile(
-            os.getcwd() + "/tests/testResources/testCustomDirectory/example.html"
-        )
-        assert os.path.isfile(
-            os.getcwd() + "/tests/testResources/testCustomDirectory/test.html"
-        )
+        assert os.path.isfile("example.html")
+        assert os.path.isfile("test.html")
     else:
         fileArr.append("example.txt")
         fileArr.append("test.md")
@@ -135,12 +131,12 @@ def test_converstion_func_folder_non_custom_dir():
     os.chdir("..")
     setup_test()
     arrayOfFiles = []
-    arrayOfFiles.append("Silver Blaze.txt")
-    arrayOfFiles.append("The Adventure of the Six Napoleans.txt")
-    arrayOfFiles.append("The Adventure of the Speckled Band.txt")
-    arrayOfFiles.append("The Naval Treaty.txt")
-    arrayOfFiles.append("The Red Headed League.txt")
     if os.name == "posix":
+        arrayOfFiles.append("Silver Blaze.txt")
+        arrayOfFiles.append("The Adventure of the Six Napoleans.txt")
+        arrayOfFiles.append("The Adventure of the Speckled Band.txt")
+        arrayOfFiles.append("The Naval Treaty.txt")
+        arrayOfFiles.append("The Red Headed League.txt")
         src.staticsg.roman_ssg_util.conversion_func_folder(
             "en-CA",
             os.getcwd() + "/" + "Sherlock-Holmes-Selected-Stories",
@@ -150,6 +146,11 @@ def test_converstion_func_folder_non_custom_dir():
             os.getcwd() + "/" + "dist",
         )
     else:
+        arrayOfFiles.append("Silver Blaze.txt")
+        arrayOfFiles.append("The Adventure of the Six Napoleans.txt")
+        arrayOfFiles.append("The Adventure of the Speckled Band.txt")
+        arrayOfFiles.append("The Naval Treaty.txt")
+        arrayOfFiles.append("The Red Headed League.txt")
         src.staticsg.roman_ssg_util.conversion_func_folder(
             "en-CA",
             os.getcwd() + "\\" + "Sherlock-Holmes-Selected-Stories",
