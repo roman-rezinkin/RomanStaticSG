@@ -177,11 +177,11 @@ def test_converstion_func_folder_custom_dir():
     arrayOfFiles.append("The Naval Treaty.txt")
     arrayOfFiles.append("The Red Headed League.txt")
 
-    if os.path.isdir("testCustomDirectory"):
-        shutil.rmtree("testCustomDirectory")
-        os.mkdir("testCustomDirectory")
-    else:
-        os.mkdir("testCustomDirectory")
+    # if os.path.isdir("testCustomDirectory"):
+    #     shutil.rmtree("testCustomDirectory")
+    #     os.mkdir("testCustomDirectory")
+    # else:
+    #     os.mkdir("testCustomDirectory")
     if os.name == "posix":
         src.staticsg.roman_ssg_util.conversion_func_folder(
             "en-CA",
