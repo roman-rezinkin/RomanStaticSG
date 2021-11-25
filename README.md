@@ -23,7 +23,7 @@ Fork and clone this repository. Then execute any of the following [commands](#co
     
     python romanssg.py --help
 
-When running the command input command and not specifying the output command, a local folder named "dist" will be created in the directory of the existing file
+If you run the input command and don't specify the output command, a local folder named "dist" will be created in the directory of the existing file.
 ## <a name="command_list"></a>Command List
 ### Help Screen 
 ```c
