@@ -23,11 +23,15 @@ Fork and clone this repository. Then execute any of the following [commands](#co
     
     python romanssg.py --help
 
-If you run the input command and don't specify the output command, a local folder named "dist" will be created in the directory of the existing file.
+If you run the input command and don't specify the output command, a local folder named "dist" will be created in the directory of the existing file.  
+  
+**!!NOTE!!**  
+  
+**If you are executing the following commands from your command line, please navigate to the ```src/staticg``` folder, as the commands below expect that you are located in that directory!!**
 ## <a name="command_list"></a>Command List
 ### Help Screen 
 ```c
-    python romanssg.py --help  |  python romanssg.py -h  
+    python src/staticsg/romanssg.py --help  |  python romanssg.py -h  
       
     Help Screen  
     Usage: python romanssg.py
